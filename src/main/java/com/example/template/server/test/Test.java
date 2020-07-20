@@ -1,8 +1,11 @@
 package com.example.template.server.test;
 
+import com.example.template.beans.TestBean;
 import com.example.template.server.Server;
 import com.example.template.tool.ResultDB;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class Test extends Server {
@@ -12,5 +15,12 @@ public class Test extends Server {
         resultDB.args = new  Object[]{5};
         resultDB.sql = "select * from word_w where ID = ? ";
         return resultDB;
+    }
+
+    @Override
+    public Object selectRow(Map<String, Object> map) {
+        TestBean object = new TestBean();
+        object.name = "test";
+        return object;
     }
 }

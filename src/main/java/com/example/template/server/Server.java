@@ -1,6 +1,5 @@
 package com.example.template.server;
 
-import com.example.template.beans.ServerBean;
 import com.example.template.tool.Result;
 import com.example.template.tool.ResultDB;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,39 +22,22 @@ public class Server {
     @Autowired
     JdbcTemplate jdbcTemplate;
     public String getType(){
-        return "POST";
+        return "GET";
     }
     public Result run(){
-        if (getType() == "POST" || getType() == "GET"){
-            return select();
-        }
-        return update();
+
+        return select();
     }
     public ResultDB selectSql(){
         resultDB.args = new  Object[]{5};
         resultDB.sql = "select * from word_w where ID = ? ";
         return resultDB;
     }
-    public ServerBean selectRow(Map<String,Object> map){
-        ServerBean b = new ServerBean();
-        b.name = "sdfsds";
-        return b;
+    public Object selectRow(Map<String,Object> map){
+        Object object = new Object();
+        return object;
     }
-    private Result update(){
-        ResultDB resultDB = selectSql();
-        System.out.println(resultDB.sql);
-        if (resultDB.error != null){
-            result.fail(resultDB.error);
-            return result;
-        }
-        int re = jdbcTemplate.update(resultDB.sql);
-        if (re != 0){
-            result.fail("sql执行失败");
-            return result;
-        }
-        result.success(null);
-        return result;
-    }
+
     private Result select(){
         ResultDB resultDB = selectSql();
         System.out.println(resultDB.sql);
@@ -64,11 +46,22 @@ public class Server {
             result.fail(resultDB.error);
             return result;
         }
-        List<ServerBean> array =  new ArrayList<ServerBean>();
+        if (getType() != "GET"){
+
+            int re = jdbcTemplate.update(resultDB.sql);
+            if (re == 0){
+                result.fail("sql执行失败");
+                return result;
+            }
+            result.success(null);
+            return result;
+        }
+
+        List<Object> array =  new ArrayList<Object>();
         List<Map<String,Object>> list = jdbcTemplate.queryForList(resultDB.sql,resultDB.args);
         for (Map<String,Object> map : list){
-            ServerBean model = selectRow(map);
-            array.add(model);
+            Object object = selectRow(map);
+            array.add(object);
         }
         result.success(array);
         return result;
