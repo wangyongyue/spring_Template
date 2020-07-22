@@ -21,9 +21,6 @@ public class Server {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-    public String getType(){
-        return "GET";
-    }
     public Result run(){
 
         return select();
@@ -46,7 +43,7 @@ public class Server {
             result.fail(resultDB.error);
             return result;
         }
-        if (getType() != "GET"){
+        if (resultDB.sql.startsWith("select") == false){
 
             int re = jdbcTemplate.update(resultDB.sql);
             if (re == 0){
