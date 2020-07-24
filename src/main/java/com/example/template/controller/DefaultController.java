@@ -10,13 +10,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(method = RequestMethod.POST)
 public class DefaultController {
+    @Autowired
+    Result result;
 
     @Autowired
     Test test;
-
     @RequestMapping(value = "/abc")
     public Result abc(){
-        return  test.run();
+
+        if (test.run()){
+            result.success(test.array);
+        }else {
+            result.fail(test.error);
+        }
+        return  result;
     }
 
 }

@@ -2,25 +2,31 @@ package com.example.template.server.test;
 
 import com.example.template.beans.TestBean;
 import com.example.template.server.Server;
-import com.example.template.tool.ResultDB;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class Test extends Server {
 
-    @Override
-    public ResultDB selectSql() {
-        resultDB.args = new  Object[]{5};
-        resultDB.sql = "select * from word_w where ID = ? ";
-        return resultDB;
-    }
+    public List<TestBean> array = new ArrayList<>();
 
     @Override
-    public Object selectRow(Map<String, Object> map) {
-        TestBean object = new TestBean();
-        object.name = "test";
-        return object;
+    public Boolean loadSql() {
+        args = new Object[]{5};
+        sql = "select * from word_w where ID = ? ";
+        return true;
     }
+    @Override
+    public Boolean handleData(List<Map<String, Object>> list) {
+        for (Map<String,Object> map : list){
+            TestBean object = new TestBean();
+            object.name = "test";
+            array.add(object);
+        }
+        return true;
+    }
+
 }
