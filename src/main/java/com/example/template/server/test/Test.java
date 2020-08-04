@@ -21,10 +21,11 @@ public class Test extends Server {
     }
     @Override
     public Boolean handleData(List<Map<String, Object>> list) {
+        this.list = new ArrayList<>();
         for (Map<String,Object> map : list){
             TestBean object = new TestBean();
             object.name = "test";
-            array.add(object);
+            this.list.add(object);
         }
         return true;
     }

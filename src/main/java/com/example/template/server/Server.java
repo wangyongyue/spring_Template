@@ -22,6 +22,8 @@ public class Server {
     public String error;
     public String sql;
     public Object[] args;
+    public List list;
+
     public Boolean loadSql(){
         args = new  Object[]{5};
         sql = "select * from word_w where ID = ? ";
